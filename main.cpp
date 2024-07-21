@@ -4,9 +4,9 @@
 #include <vector>
 #include <random>
 
-#define POP_SIZE 100
+#define POP_SIZE 10
 #define GEN_SIZE 16
-#define MUT_RATE 0.01
+#define MUT_RATE 0.1
 
 
 /*########################################
