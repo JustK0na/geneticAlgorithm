@@ -46,9 +46,10 @@ int main(int argc, char **argv){
 
     //for(int i=0; i<20; i++){
     int i=0;
-    while(overalFitness<157){
+    while(overalFitness<(int)(POP_SIZE*GEN_SIZE * 0.98)){
         //std::cout<<"Gen: "<<i+1<<std::endl;
-        std::vector<Pop> Parents = rouletteWheelSelection(population, 0.3) ;
+        //std::vector<Pop> Parents = rouletteWheelSelection(population, 0.3);
+        std::vector<Pop> Parents = simpleSelection(population, 0.3);
         //std::cout<<"\n\nGeneration ["<<i+1<<"] Parents:\n";
         //showPopulation(Parents);
 

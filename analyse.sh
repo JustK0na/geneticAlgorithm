@@ -6,7 +6,7 @@ POP=$2
 GEN=$3
 MUT=$4
 # Output file
-OUTPUT_FILE="generations_log.txt"
+OUTPUT_FILE=$5
 
 # Clear the output file
 > $OUTPUT_FILE
