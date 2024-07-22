@@ -91,7 +91,7 @@ std::vector<Pop> rouletteWheelSelection(std::vector<Pop> population, float nOfBe
         for(int j=0; j<(int)population.size();j++){
             if(randomNumber < chanceVector.at(j)){
                 parents.push_back(population.at(j));
-                std::cout<<"Parent's choosen fitness: "<<population.at(j).fitness<<", chance: "<<chanceVector.at(j)/sumFitnness*100<<"% \n";                
+                //std::cout<<"Parent's choosen fitness: "<<population.at(j).fitness<<", chance: "<<chanceVector.at(j)/sumFitnness*100<<"% \n";                
                 break;
             }
             else
@@ -126,7 +126,7 @@ std::vector<Pop> onePointCrossover(std::vector<Pop> parents, int nOfPop){
         tmpChild.chromosome.insert(tmpChild.chromosome.end(), parent2.chromosome.begin()+randomPoint, parent2.chromosome.end());
         children.push_back(tmpChild);
 
-        std::cout<<"Crossover here: "<<randomPoint<<"\n";
+        /*std::cout<<"Crossover here: "<<randomPoint<<"\n";
         std::cout<<"Parent 1:\n";
         for(int i=0; i<(int)parent1.chromosome.size(); i++)
             std::cout<<"{"<<parent1.chromosome.at(i)<<"}";
@@ -138,7 +138,7 @@ std::vector<Pop> onePointCrossover(std::vector<Pop> parents, int nOfPop){
         std::cout<<"Child:\n";
         for(int i=0; i<(int)parent2.chromosome.size(); i++)
             std::cout<<"{"<<tmpChild.chromosome.at(i)<<"}";
-        std::cout<<"\t fit: "<<tmpChild.fitness<<std::endl;
+        std::cout<<"\t fit: "<<tmpChild.fitness<<std::endl;*/
     }
 
     newGeneration.reserve(children.size()+parents.size());

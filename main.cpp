@@ -3,10 +3,10 @@
 #include <iostream>
 #include <vector>
 #include <random>
-
+/*
 #define POP_SIZE 10
 #define GEN_SIZE 16
-#define MUT_RATE 0.01
+#define MUT_RATE 0.01*/
 
 
 /*########################################
@@ -26,40 +26,48 @@ float eval(std::vector<Pop> &population){
     return fit;
 };
 
-int main(){
+int main(int argc, char **argv){
+
+    int POP_SIZE = atof(argv[1]);
+    //std::cout<<"POP_SIZE: "<<POP_SIZE<<"\n";
+    int GEN_SIZE = atof(argv[2]);
+    //std::cout<<"GEN_SIZE: "<<GEN_SIZE<<"\n";
+    float MUT_RATE = atof(argv[3]);
+    //std::cout<<"MUT_SIZE: "<<MUT_RATE<<"\n";
+
 
     std::vector<Pop> population;
     population = createPopulation(POP_SIZE, GEN_SIZE);
     eval(population);
-    std::cout<<"\n\n\n\t\t Pierwsza Generacja: \n\n\n";
-    showPopulation(population);
+    //std::cout<<"\n\n\n\t\t Pierwsza Generacja: \n\n\n";
+    //showPopulation(population);
     float overalFitness = fitnessSum(population);
-    std::cout<<"Overal fitness: "<<overalFitness<<std::endl;
+    //std::cout<<"Overal fitness: "<<overalFitness<<std::endl;
 
     //for(int i=0; i<20; i++){
     int i=0;
     while(overalFitness<157){
-        std::cout<<"Gen: "<<i+1<<std::endl;
+        //std::cout<<"Gen: "<<i+1<<std::endl;
         std::vector<Pop> Parents = rouletteWheelSelection(population, 0.3) ;
-        std::cout<<"\n\nGeneration ["<<i+1<<"] Parents:\n";
-        showPopulation(Parents);
+        //std::cout<<"\n\nGeneration ["<<i+1<<"] Parents:\n";
+        //showPopulation(Parents);
 
         population = onePointCrossover(Parents, POP_SIZE);
         mutate(population, MUT_RATE);
         eval(population);
         overalFitness = fitnessSum(population);
-        std::cout<<"\nGeneration ["<<i+1<<"]\n";
-        showPopulation(population);
+        //std::cout<<"\nGeneration ["<<i+1<<"]\n";
+        //showPopulation(population);
         i++;
     }  
         
 
     //}
     eval(population);
-    std::cout<<"\n\n\n\t\tOstatnia generacja: \n\n\n";
-    showPopulation(population);
+    //std::cout<<"\n\n\n\t\tOstatnia generacja: \n\n\n";
+    //showPopulation(population);
     overalFitness = fitnessSum(population);
-    std::cout<<"Overal fitness: "<<overalFitness<<" after "<< i << " generations"<<std::endl;
+    std::cout<</*"Overal fitness: "<<overalFitness<<" after "<< */i /*<< " generations"*/<<std::endl;
 
     return 0;
 }
