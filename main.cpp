@@ -41,25 +41,26 @@ int main(int argc, char **argv){
     eval(population);
     //std::cout<<"\n\n\n\t\t Pierwsza Generacja: \n\n\n";
     //showPopulation(population);
-    float overalFitness = fitnessSum(population);
+    //float overalFitness = fitnessSum(population);
     //std::cout<<"Overal fitness: "<<overalFitness<<std::endl;
 
     //for(int i=0; i<20; i++){
     int i=0;
-    while(overalFitness<(int)(POP_SIZE*GEN_SIZE * 0.98)){
+    while(bestIndividual(population)<(int)(GEN_SIZE * 0.95)){
         //std::cout<<"Gen: "<<i+1<<std::endl;
         //std::vector<Pop> Parents = rouletteWheelSelection(population, 0.3);
-        std::vector<Pop> Parents = simpleSelection(population, 0.3);
+        std::vector<Pop> Parents = rouletteWheelSelection(population, 0.3);
         //std::cout<<"\n\nGeneration ["<<i+1<<"] Parents:\n";
         //showPopulation(Parents);
 
         population = onePointCrossover(Parents, POP_SIZE);
         mutate(population, MUT_RATE);
         eval(population);
-        overalFitness = fitnessSum(population);
+        //overalFitness = fitnessSum(population);
         //std::cout<<"\nGeneration ["<<i+1<<"]\n";
         //showPopulation(population);
         i++;
+        //std::cout<<"Best individual from ["<<i<<"] generation: \t"<<bestIndividual(population)<<std::endl;
     }  
         
 
@@ -67,7 +68,7 @@ int main(int argc, char **argv){
     eval(population);
     //std::cout<<"\n\n\n\t\tOstatnia generacja: \n\n\n";
     //showPopulation(population);
-    overalFitness = fitnessSum(population);
+    //overalFitness = fitnessSum(population);
     std::cout<</*"Overal fitness: "<<overalFitness<<" after "<< */i /*<< " generations"*/<<std::endl;
 
     return 0;

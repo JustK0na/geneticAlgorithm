@@ -52,7 +52,15 @@ float fitnessSum(std::vector<Pop> population){
     }
     return allFirnes;
 }
-
+float bestIndividual(std::vector<Pop> population){
+    float bestInd = 0;
+    for(int i=0; i<(int)population.size(); i++){
+        if(population.at(i).fitness>= bestInd){
+            bestInd = population.at(i).fitness;
+        }
+    }
+    return bestInd;
+}
 bool customSort(Pop a, Pop b){
     return a.fitness>b.fitness;
 }
