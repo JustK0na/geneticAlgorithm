@@ -2,16 +2,19 @@
 #include <vector>
 #include <cmath>
 
+#define INTSIZE 2
+
+
 int main(){
 
-    std::vector<int> binary={1,0,1,0,0,0,1,1,0,1,0,0};
+    std::vector<int> binary={1,1};
     for(int i=0; i<(int)binary.size(); i++){
         std::cout<<binary.at(i)<<" ";
     }
     std::cout<<std::endl;
 
     int vectSize;
-    vectSize = binary.size()/4;
+    vectSize = binary.size()/INTSIZE;
     //std::cout<<vectSize<<std::endl;
     std::vector<int> decimal;
     int tmpDec=0;
@@ -20,9 +23,9 @@ int main(){
     for(int i=0; i<(int)binary.size(); i++){
         
         if(binary.at(binary.size()-i-1))
-            tmpDec = tmpDec + pow(2,i%4);
+            tmpDec = tmpDec + pow(2,i%INTSIZE);
             
-        if(i%4==3){
+        if(i%INTSIZE==INTSIZE-1){
             decimal.insert(decimal.begin(), tmpDec);    
             tmpDec=0;
         }
