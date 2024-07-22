@@ -3,6 +3,7 @@
 #include <random>
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 
 //#define SEED 13
 #define SEED (std::chrono::system_clock::now().time_since_epoch().count())
@@ -56,13 +57,46 @@ bool customSort(Pop a, Pop b){
     return a.fitness>b.fitness;
 }
 
-std::vector<Pop> selectParents(std::vector<Pop> population, float nOfBest){
+std::vector<Pop> simpleSelection(std::vector<Pop> population, float nOfBest){
     std::vector<Pop> parents;
 
     std::sort(population.begin(), population.end(), customSort);
     for(int i=0; i<(int)population.size()*nOfBest; i++){
         parents.push_back(population.at(i));
-     //   std::cout<<"Osobnik fitnes z rodzicow: "<<population.at(i).fitness<<"\n";
+
+    }
+    
+    return parents;
+}
+
+
+std::vector<Pop> rouletteWheelSelection(std::vector<Pop> population, float nOfBest){
+    std::vector<Pop> parents;
+    std::vector<float> chanceVector;
+    double sumFitnness = 0;
+    
+
+    for(int j=0; j<(int)population.size(); j++){
+        sumFitnness += pow(population.at(j).fitness,4);
+        chanceVector.push_back(pow(population.at(j).fitness,4));
+    }
+    std::mt19937 rng(SEED);
+    std::uniform_int_distribution<std::mt19937::result_type> rNumPar(0, sumFitnness);
+    int i=0;
+    int randomNumber = rNumPar(rng);
+
+    while((int)parents.size()<(int)population.size()*nOfBest){
+        //std::cout<<std::endl<<randomNumber;
+        randomNumber = rNumPar(rng);
+        for(int j=0; j<(int)population.size();j++){
+            if(randomNumber < chanceVector.at(j)){
+                parents.push_back(population.at(j));
+                std::cout<<"Parent's choosen fitness: "<<population.at(j).fitness<<", chance: "<<chanceVector.at(j)/sumFitnness*100<<"% \n";                
+                break;
+            }
+            else
+                randomNumber = randomNumber - chanceVector.at(i);
+        }            
     }
 
     return parents;
@@ -76,33 +110,40 @@ std::vector<Pop> onePointCrossover(std::vector<Pop> parents, int nOfPop){
     std::uniform_int_distribution<std::mt19937::result_type> rNumPoi(1, (int)parents.at(0).chromosome.size()-1);
     
     while((int)(children.size()+parents.size()) < nOfPop){
-        //std::cout<<"TEST1\n";
         int a=rNumPar(rng);
         Pop parent1 = parents.at(a);
-        a = rNumPar(rng);
-        Pop parent2 = parents.at(a);
+        int b = rNumPar(rng);
+        while(b==a){
+            b = rNumPar(rng);
+        }
+
+        Pop parent2 = parents.at(b);
         int randomPoint = rNumPoi(rng);
-        //std::cout<<"TEST2: random point:"<<randomPoint<<"\n";
 
         Pop tmpChild;
-        //std::cout<<"TEST3\n";
         tmpChild.chromosome.reserve(parent1.chromosome.size());
-        //std::cout<<"TEST4\n";
         tmpChild.chromosome.insert(tmpChild.chromosome.end(), parent1.chromosome.begin(), parent1.chromosome.begin()+randomPoint);
-        //std::cout<<"TEST5\n";
         tmpChild.chromosome.insert(tmpChild.chromosome.end(), parent2.chromosome.begin()+randomPoint, parent2.chromosome.end());
-        //std::cout<<"TEST6\n";
         children.push_back(tmpChild);
-        //std::cout<<"TEST7\n";
-              
+
+        std::cout<<"Crossover here: "<<randomPoint<<"\n";
+        std::cout<<"Parent 1:\n";
+        for(int i=0; i<(int)parent1.chromosome.size(); i++)
+            std::cout<<"{"<<parent1.chromosome.at(i)<<"}";
+        std::cout<<"\t fit: "<<parent1.fitness<<std::endl;
+        std::cout<<"Parent 2:\n";
+        for(int i=0; i<(int)parent2.chromosome.size(); i++)
+            std::cout<<"{"<<parent2.chromosome.at(i)<<"}";
+        std::cout<<"\t fit: "<<parent2.fitness<<std::endl;
+        std::cout<<"Child:\n";
+        for(int i=0; i<(int)parent2.chromosome.size(); i++)
+            std::cout<<"{"<<tmpChild.chromosome.at(i)<<"}";
+        std::cout<<"\t fit: "<<tmpChild.fitness<<std::endl;
     }
 
     newGeneration.reserve(children.size()+parents.size());
-    //std::cout<<"TEST8\n";
     newGeneration.insert(newGeneration.end(), parents.begin(), parents.end());
-    //std::cout<<"TEST9\n";
     newGeneration.insert(newGeneration.end(), children.begin(), children.end());
-    //std::cout<<"TEST10\n";
     return newGeneration;
 };
 

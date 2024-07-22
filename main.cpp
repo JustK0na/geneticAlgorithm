@@ -6,7 +6,7 @@
 
 #define POP_SIZE 10
 #define GEN_SIZE 16
-#define MUT_RATE 0.1
+#define MUT_RATE 0.01
 
 
 /*########################################
@@ -25,25 +25,7 @@ float eval(std::vector<Pop> &population){
 
     return fit;
 };
-/*###################################
-Z jakiegoś powodu mutacja kompletnie
-nie działa. Gdy MUT_RATE dąży do 0
-(w szczególności mniejsze niż 0.1)
-jakość populacji spada do PRAWIE całkiem
-losowej. Dodatkowo MUT_RATE = 0 działa
-jak gdyby mutacje zachodziły zawsze.
-Dla tego prostego przykładu MUT_RATE = 0
-powinien oznaczać, że znajdziemy idealną
-odpowiedź, a tak nie jest.
-Może to być też wina onePointCrossover.
-Co.
-stop.
-jednak działa poprawnie?
-dla innego seed'a losowego niż 420
-Nie ważne wszystko ok, ale szkoda
-mi takiego długiego i ładnego
-komentarza.
-#####################################*/
+
 int main(){
 
     std::vector<Pop> population;
@@ -54,19 +36,30 @@ int main(){
     float overalFitness = fitnessSum(population);
     std::cout<<"Overal fitness: "<<overalFitness<<std::endl;
 
-    for(int i=0; i<100; i++){
-        //std::cout<<"Gen: "<<i<<std::endl;
-        eval(population);
-        std::vector<Pop> Parents = selectParents(population, 0.3);
+    //for(int i=0; i<20; i++){
+    int i=0;
+    while(overalFitness<157){
+        std::cout<<"Gen: "<<i+1<<std::endl;
+        std::vector<Pop> Parents = rouletteWheelSelection(population, 0.3) ;
+        std::cout<<"\n\nGeneration ["<<i+1<<"] Parents:\n";
+        showPopulation(Parents);
+
         population = onePointCrossover(Parents, POP_SIZE);
         mutate(population, MUT_RATE);
+        eval(population);
+        overalFitness = fitnessSum(population);
+        std::cout<<"\nGeneration ["<<i+1<<"]\n";
+        showPopulation(population);
+        i++;
+    }  
+        
 
-    }
+    //}
     eval(population);
     std::cout<<"\n\n\n\t\tOstatnia generacja: \n\n\n";
     showPopulation(population);
     overalFitness = fitnessSum(population);
-    std::cout<<"Overal fitness: "<<overalFitness<<std::endl;
+    std::cout<<"Overal fitness: "<<overalFitness<<" after "<< i << " generations"<<std::endl;
 
     return 0;
 }

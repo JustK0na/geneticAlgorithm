@@ -18,7 +18,6 @@ int main(){
     //std::cout<<vectSize<<std::endl;
     std::vector<int> decimal;
     int tmpDec=0;
-
     std::cout<<"\n\n\n";
     for(int i=0; i<(int)binary.size(); i++){
         
@@ -30,9 +29,6 @@ int main(){
             tmpDec=0;
         }
         std::cout<<tmpDec<<" \n";
-        
-        
-        
     }
     std::cout<<"\n\n\n";
     for(int i=0; i<(int)decimal.size(); i++){
