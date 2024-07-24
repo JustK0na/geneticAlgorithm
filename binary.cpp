@@ -7,7 +7,7 @@
 
 int main(){
 
-    std::vector<int> binary={0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,0,1,1};
+    std::vector<int> binary={0,0,0,0,0,0,1,0,1,1,1,1,1,1,0,0,1,0,0,1,0,0,1,0};
     for(int i=0; i<(int)binary.size(); i++){
         std::cout<<binary.at(i)<<" ";
     }

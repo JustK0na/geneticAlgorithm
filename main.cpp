@@ -60,7 +60,7 @@ int main(int argc, char **argv){
         //std::cout<<"Gen: "<<i+1<<std::endl;
         //std::vector<Pop> Parents = rouletteWheelSelection(population, 0.3);
         auto start = std::chrono::high_resolution_clock::now();
-        std::vector<Pop> Parents = simpleSelection(population, 0.1);
+        std::vector<Pop> Parents = tournamentSelection(population, 0.3);
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double, std::milli> dur = end - start;
         //std::cout<<"Generating parents time: "<<dur.count()<<" ms\n";
@@ -73,8 +73,9 @@ int main(int argc, char **argv){
         overalFitness = fitnessSum(population);
         //std::cout<<"\nGeneration ["<<i+1<<"]\n";
         //showPopulation(population);
-        std::cout<<"Overal pop fit: "<<overalFitness<<"\t target pop fit: "<<POP_SIZE*GEN_SIZE<<" rate: "<<overalFitness/(POP_SIZE*GEN_SIZE)*100<<"%\n";
         i++;
+        std::cout<<"Overal pop fit: "<<overalFitness<<"\t target pop fit: "<<POP_SIZE*GEN_SIZE<<" rate: "<<overalFitness/(POP_SIZE*GEN_SIZE)*100<<"%\n";
+
         int bestID = bestIndividual(population);
         std::cout<<"Best individual from ["<<i<<"] generation:\t fit: "<<population.at(bestID).fitness<<"\n";
         for(int g=0; g<(int)population.at(bestID).chromosome.size();g++){

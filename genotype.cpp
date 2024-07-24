@@ -111,6 +111,27 @@ std::vector<Pop> rouletteWheelSelection(std::vector<Pop> population, float nOfBe
     return parents;
 };
 
+std::vector<Pop> tournamentSelection(std::vector<Pop>population, float nOfBest){
+    std::vector<Pop> parents;
+    std::mt19937 rng(SEED);
+    std::uniform_int_distribution<std::mt19937::result_type> rNumPar(0, (int)population.size()-1);
+    int randomNumber = rNumPar(rng);
+    while((int)parents.size()<(int)population.size()*nOfBest){
+        randomNumber = rNumPar(rng);
+        Pop tmp1 = population.at(randomNumber);
+        randomNumber = rNumPar(rng);
+        Pop tmp2 = population.at(randomNumber);
+
+        if(tmp1.fitness>=tmp2.fitness)
+            parents.push_back(tmp1);
+        else
+            parents.push_back(tmp2);
+    }
+    
+
+    return parents;
+}
+
 std::vector<Pop> onePointCrossover(std::vector<Pop> parents, int nOfPop){
     std::vector<Pop> children;
     std::vector<Pop> newGeneration;
