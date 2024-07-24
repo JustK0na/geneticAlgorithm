@@ -52,11 +52,13 @@ float fitnessSum(std::vector<Pop> population){
     }
     return allFirnes;
 }
-float bestIndividual(std::vector<Pop> population){
-    float bestInd = 0;
+int bestIndividual(std::vector<Pop> population){
+    int bestInd = 0;
+    int bestFitness = -100000;
     for(int i=0; i<(int)population.size(); i++){
-        if(population.at(i).fitness>= bestInd){
-            bestInd = population.at(i).fitness;
+        if(population.at(i).fitness>= bestFitness){
+            bestInd = i;
+            bestFitness = population.at(i).fitness;
         }
     }
     return bestInd;
@@ -81,16 +83,15 @@ std::vector<Pop> simpleSelection(std::vector<Pop> population, float nOfBest){
 std::vector<Pop> rouletteWheelSelection(std::vector<Pop> population, float nOfBest){
     std::vector<Pop> parents;
     std::vector<float> chanceVector;
-    double sumFitnness = 0;
+    float sumFitnness = 0;
     
 
     for(int j=0; j<(int)population.size(); j++){
-        sumFitnness += pow(population.at(j).fitness,4);
-        chanceVector.push_back(pow(population.at(j).fitness,4));
+        sumFitnness += pow(population.at(j).fitness,1);
+        chanceVector.push_back(pow(population.at(j).fitness,1));
     }
     std::mt19937 rng(SEED);
     std::uniform_int_distribution<std::mt19937::result_type> rNumPar(0, sumFitnness);
-    int i=0;
     int randomNumber = rNumPar(rng);
 
     while((int)parents.size()<(int)population.size()*nOfBest){
@@ -103,7 +104,7 @@ std::vector<Pop> rouletteWheelSelection(std::vector<Pop> population, float nOfBe
                 break;
             }
             else
-                randomNumber = randomNumber - chanceVector.at(i);
+                randomNumber = randomNumber - chanceVector.at(j);
         }            
     }
 
@@ -158,12 +159,12 @@ std::vector<Pop> onePointCrossover(std::vector<Pop> parents, int nOfPop){
 std::vector<Pop> mutate(std::vector<Pop> &population, float mutRate){
 
     std::mt19937 rng(SEED);
-    std::bernoulli_distribution dist(mutRate);
+    std::uniform_real_distribution<> dist(0,1);
 
     for(int i=0; i<(int)population.size(); i++){
         for(int j=0; j<(int)population.at(i).chromosome.size(); j++){
             //std::cout<<"Bruh(?) i: "<<i<<",  j: "<<j<<std::endl;
-            if(dist(rng)){
+            if(dist(rng)<=mutRate){
                 if(population.at(i).chromosome.at(j)){
                     population.at(i).chromosome.at(j)=0;
                 }

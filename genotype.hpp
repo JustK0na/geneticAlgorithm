@@ -18,5 +18,5 @@ std::vector<Pop> rouletteWheelSelection(std::vector<Pop>, float);
 std::vector<Pop> onePointCrossover(std::vector<Pop>, int nOfPop);
 std::vector<Pop> mutate(std::vector<Pop>&, float);
 float fitnessSum(std::vector<Pop>);
-float bestIndividual(std::vector<Pop>);
+int bestIndividual(std::vector<Pop>);
 #endif 

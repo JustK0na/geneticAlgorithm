@@ -19,3 +19,5 @@ do
 done
 
 echo "Completed $N runs. Results written to $OUTPUT_FILE."
+
+./average $OUTPUT_FILE
